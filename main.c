@@ -21,21 +21,22 @@ struct Point{
 };
 
 #define TRIANGLE_LIST_LEN 100
-#define SIZE_X 1
-#define SIZE_Y 1
-#define PI 3
+#define SIZE_X 2
+#define SIZE_Y 2
+#define PI 3.1415
 
 struct Triangle triangleList[TRIANGLE_LIST_LEN]; //make me an actual list
 struct Vertex eyePoint;
 struct Vertex mainPoint;
 struct Vertex n0, e1, e2;
+float d = 0;
 
 struct Triangle *getNextTriangle(){
     static int i=0;
-    return &triangleList[i];
+    return &triangleList[i++];
 }
 
-void pushTriangle(struct Triangle *t){
+void pushTriangle(struct Triangle t){
     //float xb = t->x - x;      DO SOME DEPTH MAPPING OR SOMETHING
     //float yb = t->y - y;      TODO
     //float zb = t->z - z;
@@ -54,7 +55,7 @@ void pushTriangle(struct Triangle *t){
     //triangleList[i] = *t;
 
     static int i=0;
-    triangleList[i] = *t;
+    triangleList[i++] = t;
 }
 
 void restartTriangleList(){
@@ -118,14 +119,18 @@ struct Triangle t(struct Vertex v1, struct Vertex v2, struct Vertex v3){
 
 
 void generateView(struct Vertex eye, struct Vertex dir, float angle){ //dir should probably be a vector of angles or something
-    float dist = ((SIZE_X)/2)/tan((angle*PI)/180);
-    struct Vertex nns = smul(dist, dir);
+    d = ((SIZE_X)/2)/tan((angle*PI)/180);
+    struct Vertex nns = smul(d, dir);
     mainPoint = vadd(nns, eye);
     eyePoint = eye;
-    n0 = smul((1/vlen(nns)), nns); //come on, inv sqrt
-    e1.x = 1;
-    e1.y = (n0.x/n0.y)*e1.x;
-    e1 = smul((1/vlen(e1)),e1);
+    n0 = dir;
+    if(n0.y==0){
+        e1 = p(0,1,0);
+    }else{
+        e1.x = 1;
+        e1.y = (n0.x/n0.y)*e1.x;
+        e1 = smul((1/vlen(e1)),e1);
+    }
     e2 = vprod(e1, n0);
 }
 
@@ -140,4 +145,34 @@ struct Point transform(struct Vertex v){
 }
 
 int main(){
+    printf("\n\nWelcome\n\n");
+
+    generateView(p(-2,0,0), p(0,0,1), 35);
+
+    printf("View:\n");
+    printf("%.3f\n", d);
+    printf("n0 = (%.3f, %.3f, %.3f)\n", n0.x, n0.y, n0.z);
+    printf("e1 = (%.3f, %.3f, %.3f)\n", e1.x, e1.y, e1.z);
+    printf("e2 = (%.3f, %.3f, %.3f)\n", e2.x, e2.y, e2.z);
+    printf("ep = (%.3f, %.3f, %.3f)\n", eyePoint.x, eyePoint.y, eyePoint.z);
+    printf("mp = (%.3f, %.3f, %.3f)\n", mainPoint.x, mainPoint.y, mainPoint.z);
+
+    pushTriangle(t(p(-1,-1,5), p(-1,1,5), p(1,1,5)));
+    pushTriangle(t(p(-1,-1,5), p(1,-1,5), p(1,1,5)));
+
+    pushTriangle(t(p(-1,-1,4), p(-1,1,4), p(1,1,4)));
+    pushTriangle(t(p(-1,-1,4), p(1,-1,4), p(1,1,4)));
+
+
+    for(int i=0; i<4; i++){
+        struct Triangle tr = *getNextTriangle();
+        struct Point pn = transform(tr.v1);
+        printf("%.3f,%.3f\n", pn.x, pn.y);
+        pn = transform(tr.v2);
+        printf("%.3f,%.3f\n", pn.x, pn.y);
+        pn = transform(tr.v3);
+        printf("%.3f,%.3f\n", pn.x, pn.y);
+    }
+
+    return 0;
 }
