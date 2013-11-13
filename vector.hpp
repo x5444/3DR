@@ -1,3 +1,16 @@
+/*
+    Vector Lib
+
+    Just does the very basics:
+        ~   Is length of a vector
+        !   Is the normalized Vector
+        +   Is the sum
+        -   Is the subtraction
+        *   Is scalar product or scalar multiplication
+        %   Is cross product
+        []  Gets you the individual elements
+*/
+
 class Vector{
 
 	private:
@@ -14,12 +27,14 @@ class Vector{
 
 		Vector crossProd(Vector v);
 
+        Vector normalize();
+
         float& operator[](int i);
 
 		float scalarProd(Vector v);
 
         float length();
 
-		float *getCoordinates();
+        float invSqrt(float x);
 };
 

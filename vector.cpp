@@ -2,7 +2,18 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "vertex.hpp"
+#include "vector.hpp"
+
+//yeeeeeah
+float Vector::invSqrt(float x)
+{
+    float xhalf = 0.5f*x;
+    int32_t i = *(int32_t*)&x;
+    i = 0x5f3759df - (i>>1);
+    x = *(float*)&i;
+    x = x*(1.5f - xhalf*x*x);
+    return x;
+}
 
 Vector::Vector(float x, float y, float z){
 	vx[0] = x;
@@ -13,17 +24,17 @@ Vector::Vector(float x, float y, float z){
 
 Vector Vector::add(Vector v){
     Vector res;
-    res.vx[0] = this->vx[0]+v.getCoordinates()[0];
-    res.vx[1] = this->vx[1]+v.getCoordinates()[1];
-    res.vx[2] = this->vx[2]+v.getCoordinates()[2];
+    res.vx[0] = this->vx[0]+v[0];
+    res.vx[1] = this->vx[1]+v[1];
+    res.vx[2] = this->vx[2]+v[2];
     return res;
 }
 
 Vector Vector::sub(Vector v){
     Vector res;
-    res.vx[0] = this->vx[0]-v.getCoordinates()[0];
-    res.vx[1] = this->vx[1]-v.getCoordinates()[1];
-    res.vx[2] = this->vx[2]-v.getCoordinates()[2];
+    res.vx[0] = this->vx[0]-v[0];
+    res.vx[1] = this->vx[1]-v[1];
+    res.vx[2] = this->vx[2]-v[2];
     return res;
 }
 
@@ -33,16 +44,25 @@ Vector Vector::scalarMult(int a){
 
 Vector Vector::crossProd(Vector v){
     Vector res;
-    res.vx[0] = this->vx[1]*v.getCoordinates()[2] - this->vx[2]*v.getCoordinates()[1];
-    res.vx[1] = this->vx[2]*v.getCoordinates()[0] - this->vx[0]*v.getCoordinates()[2];
-    res.vx[2] = this->vx[0]*v.getCoordinates()[1] - this->vx[1]*v.getCoordinates()[0];
+    res.vx[0] = this->vx[1]*v[2] - this->vx[2]*v[1];
+    res.vx[1] = this->vx[2]*v[0] - this->vx[0]*v[2];
+    res.vx[2] = this->vx[0]*v[1] - this->vx[1]*v[0];
+    return res;
+}
+
+Vector Vector::normalize(){
+    float fact = this->invSqrt(this->vx[0]*this->vx[0] + this->vx[1]*this->vx[1] + this->vx[2]*this->vx[2]);
+    Vector res;
+    res[0] = this->vx[0]*fact;
+    res[1] = this->vx[1]*fact;
+    res[2] = this->vx[2]*fact;
     return res;
 }
 
 float Vector::scalarProd(Vector v){
 	float res=0;
 	for(int i=0; i<3; i++){
-		res += this->vx[i]*v.getCoordinates()[i];
+		res += this->vx[i]*v[i];
 	}
 	return res;
 }
@@ -63,10 +83,6 @@ Vector operator-(Vector& v1, Vector& v2){
     return v1.sub(v2);
 }
     
-float *Vector::getCoordinates(){
-	return vx;
-}
-
 Vector operator*(int a, Vector& v){
 	return v.scalarMult(a);
 }
@@ -77,6 +93,10 @@ Vector operator*(Vector& v, int a){
 
 Vector operator%(Vector& v1, Vector& v2){
     return v1.crossProd(v2);
+}
+
+Vector operator!(Vector& v){
+    return v.normalize();
 }
 
 float operator*(Vector& v1, Vector& v2){
