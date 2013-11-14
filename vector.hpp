@@ -1,3 +1,6 @@
+#ifndef __VECTOR_HPP__
+#define __VECTOR_HPP__
+
 /*
     Vector Lib
 
@@ -38,3 +41,20 @@ class Vector{
         float invSqrt(float x);
 };
 
+Vector operator+(Vector v1, Vector v2);
+
+Vector operator-(Vector v1, Vector v2);
+    
+Vector operator*(int a, Vector v);
+
+Vector operator*(Vector v, int a);
+
+Vector operator%(Vector v1, Vector v2);
+
+Vector operator!(Vector v);
+
+float operator*(Vector v1, Vector v2);
+
+float operator~(Vector v);
+
+#endif // __VECTOR_HPP__

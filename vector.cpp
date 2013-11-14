@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <stdio.h>
 #include <math.h>
 
 #include "vector.hpp"
@@ -75,48 +74,35 @@ float& Vector::operator[](int i){
     return this->vx[i];
 }
 
-Vector operator+(Vector& v1, Vector& v2){
+Vector operator+(Vector v1, Vector v2){
     return v1.add(v2);
 }
 
-Vector operator-(Vector& v1, Vector& v2){
+Vector operator-(Vector v1, Vector v2){
     return v1.sub(v2);
 }
     
-Vector operator*(int a, Vector& v){
+Vector operator*(int a, Vector v){
 	return v.scalarMult(a);
 }
 
-Vector operator*(Vector& v, int a){
+Vector operator*(Vector v, int a){
 	return v.scalarMult(a);
 }
 
-Vector operator%(Vector& v1, Vector& v2){
+Vector operator%(Vector v1, Vector v2){
     return v1.crossProd(v2);
 }
 
-Vector operator!(Vector& v){
+Vector operator!(Vector v){
     return v.normalize();
 }
 
-float operator*(Vector& v1, Vector& v2){
+float operator*(Vector v1, Vector v2){
     return v1.scalarProd(v2);
 }
 
-float operator~(Vector& v){
+float operator~(Vector v){
     return v.length();
 }
 
-
-int main(){
-	printf("\n\n\n");
-
-	Vector a(1,2,3), b(3,2,2);
-	printf("%.2f, %.2f, %.2f\n", (a-b)[0], (a-b)[1], (a+b)[2]);
-	printf("%.2f, %.2f, %.2f\n", (3*a)[0], (3*a)[1], (3*a)[2]);
-	printf("%.2f, %.2f, %.2f\n", (a*3)[0], (a*3)[1], (a*3)[2]);
-	printf("%.2f\n", (a*b));
-    printf("%.2f\n", ~a);
-
-	printf("\n\n\n");
-}
