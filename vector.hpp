@@ -22,6 +22,12 @@ class Vector{
 	public:
 		Vector(float x=0.0f, float y=0.0f, float z=0.0f);
 
+        float& x();
+
+        float& y();
+
+        float& z();
+
 		Vector add(Vector v);
 		
         Vector sub(Vector v);

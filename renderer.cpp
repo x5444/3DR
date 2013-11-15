@@ -18,15 +18,29 @@ void Renderer::createView(Vector eyePoint, Vector direction, float angle){
 
 	e[0] = -direction.normalize();
 
-	e[1][2] = 0.0f; //e1.z = 0
-	if(e[0][0] == 0.0f){
-		e[1][0] = 1.0f;
-		e[1][1] = 0.0f;
+	e[1].y() = 0.0f; //e1.z = 0
+
+	if(e[0].x() == 0.0f){
+		e[1].x() = 1.0f;
+		e[1].z() = 0.0f;
 	}else{
-		e[1][1] = 1.0f;
-		e[1][0] = -(e[1][1]*e[0][1])/e[0][0];
-		e[1] = e[1].normalize();
+		e[1].z() = 1.0f;
+		e[1].x() = -(e[1].z()*e[0].z())/e[0].x();
+		e[1] = -e[1].normalize();
 	}
 
 	e[2] = (e[0]%e[1]).normalize();
+}
+
+Point Renderer::centralProject(Vector v){
+    Vector vn;
+    vn.z() = (v-mainPoint)*e[0];
+    vn.x() = (v-mainPoint)*e[1];
+    vn.y() = (v-mainPoint)*e[2];
+
+    float px, py;
+    px = vn.x()/(1-(vn.z()/d));
+    py = vn.y()/(1-(vn.z()/d));
+
+    return Point(px, py, vn.length()); 
 }

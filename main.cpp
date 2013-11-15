@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "renderer.hpp"
 #include "vector.hpp"
 #include "triangle.hpp"
 
@@ -13,4 +14,22 @@ int main(){
     printf("%.2f\n", ~a);
 
 	printf("\n\n\n");
+
+
+    Renderer r(Vector(-2,0,0), Vector(1,0,1), 30);
+    Vector v[8];
+    Point p;
+    v[0] = Vector( 1, 1,3);
+    v[1] = Vector( 1,-1,3);
+    v[2] = Vector(-1,-1,3);
+    v[3] = Vector(-1, 1,3);
+    v[4] = Vector( 1, 1,5);
+    v[5] = Vector( 1,-1,5);
+    v[6] = Vector(-1,-1,5);
+    v[7] = Vector(-1, 1,5);
+
+    for(int i=0; i<8; i++){
+        p = r.centralProject(v[i]);
+        printf("%.2f, %.2f\n", p.x(), p.y());
+    }
 }

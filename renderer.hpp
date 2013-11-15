@@ -17,7 +17,7 @@ class Renderer{
 	public:
 		Renderer(Vector eyePoint, Vector direction, float angle);
 
-		Point centralProject(Triangle t);
+		Point centralProject(Vector v);
 
 		void createView(Vector eyePoint, Vector direction, float angle);
 };

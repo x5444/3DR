@@ -21,6 +21,18 @@ Vector::Vector(float x, float y, float z){
 	return;
 }
 
+float& Vector::x(){
+    return this->vx[0];
+}
+
+float& Vector::y(){
+    return this->vx[1];
+}
+
+float& Vector::z(){
+    return this->vx[2];
+}
+
 Vector Vector::add(Vector v){
     Vector res;
     res.vx[0] = this->vx[0]+v[0];
