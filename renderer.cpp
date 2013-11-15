@@ -44,3 +44,21 @@ Point Renderer::centralProject(Vector v){
 
     return Point(px, py, vn.length()); 
 }
+
+Color Renderer::getBrightness(Triangle t){
+    Color res = Color();
+    std::list<LightSource>::iterator i;
+    for(i = lights.begin(); i != lights.end(); i++){
+        t.buildNormal(eyePoint);
+
+        float lang = (t.middle()-(i->pos())).normalize()*t.normal(); // angle
+        if(lang < 0){
+            lang = 0;
+        }
+
+        Color lint = i->intensity();    // TODO: Account for light weakening
+                                        // at 1/r^2
+        res = res + (lang*lint);        // TODO: Overflows can happen so quickly
+    }
+    return res;
+}

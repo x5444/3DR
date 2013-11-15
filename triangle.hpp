@@ -20,6 +20,8 @@ class Triangle{
                                         // away from the reference point.
 
         Vector normal();
+
+        Vector middle();
 };
 
 #endif // __TRIANGLE_HPP__

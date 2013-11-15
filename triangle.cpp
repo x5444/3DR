@@ -30,3 +30,7 @@ void Triangle::buildNormal(Vector ref){
 Vector Triangle::normal(){
     return n;
 }
+
+Vector Triangle::middle(){
+    return m;
+}
