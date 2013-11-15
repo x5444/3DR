@@ -53,6 +53,8 @@ Vector operator%(Vector v1, Vector v2);
 
 Vector operator!(Vector v);
 
+Vector operator-(Vector v);
+
 float operator*(Vector v1, Vector v2);
 
 float operator~(Vector v);

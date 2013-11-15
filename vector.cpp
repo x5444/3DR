@@ -98,6 +98,10 @@ Vector operator!(Vector v){
     return v.normalize();
 }
 
+Vector operator-(Vector v){
+    return (-1)*v;
+}
+
 float operator*(Vector v1, Vector v2){
     return v1.scalarProd(v2);
 }
