@@ -15,6 +15,7 @@ class Renderer{
 		Vector 	direction;
 		float	d;
 		float	angle;
+        float   scale;
 
         Scene   *s;
         RenderTarget *t;

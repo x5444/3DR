@@ -46,11 +46,11 @@ Color operator-(Color c1, Color c2){
     return c1.sub(c2);
 }
     
-Color operator*(int a, Color c){
+Color operator*(float a, Color c){
 	return c.scalarMult(a);
 }
 
-Color operator*(Color c, int a){
+Color operator*(Color c, float a){
 	return c.scalarMult(a);
 }
 

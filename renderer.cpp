@@ -2,6 +2,8 @@
 #include <math.h>
 #include <list>
 
+#include <stdio.h>
+
 #include "renderer.hpp"
 #include "lightsource.hpp"
 
@@ -12,6 +14,8 @@ Renderer::Renderer(Vector eyePoint, Vector direction, float angle, Scene *sc, Re
     this->s = sc;
     this->t = ta;
 	this->createView(eyePoint, direction, angle);
+
+    this->scale = fmax(ta->width(), ta->height())/2*d*tan((angle*nPI)/180);
 }
 
 void Renderer::createView(Vector eyePoint, Vector direction, float angle){
@@ -71,9 +75,24 @@ Color Renderer::getBrightness(Triangle t){
 
     // This function is horrible, but it converges to 1, reaches 0.9 at x=1 and
     // has a slope of 8 at x=0
-    res.r() = (nE - exp(1/(5*res.r())))/(nE-1);
-    res.g() = (nE - exp(1/(5*res.g())))/(nE-1);
-    res.b() = (nE - exp(1/(5*res.b())))/(nE-1);
+    res.r() = (nE - exp(1/(5*res.r()+1)))/(nE-1);
+    res.g() = (nE - exp(1/(5*res.g()+1)))/(nE-1);
+    res.b() = (nE - exp(1/(5*res.b()+1)))/(nE-1);
     
     return res;
+}
+
+void Renderer::renderTriangle(Triangle tr){
+    tr.buildNormal(this->eyePoint);
+
+    printf("\nStarting a new Triangle:\n");
+
+    Point p[3];
+    for(int i=0; i<3; i++){
+        p[i] = ((fmax(t->height(), t->width())/2)*Point(1,1,0))+(this->centralProject(tr.v[i])*this->scale);
+        printf("%i,%i|%.2f\n",p[i].xi(),p[i].yi(),p[i].dist());
+    }
+
+    Color br = this->getBrightness(tr);
+    //printf("%.2f,%.2f,%.2f\n",br.r(), br.g(), br.b());
 }

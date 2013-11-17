@@ -27,9 +27,9 @@ Color operator+(Color c1, Color c2);
 
 Color operator-(Color c1, Color c2);
     
-Color operator*(int a, Color c);
+Color operator*(float a, Color c);
 
-Color operator*(Color c, int a);
+Color operator*(Color c, float a);
 
 
 #endif //__COLOR_HPP__

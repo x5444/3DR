@@ -32,7 +32,7 @@ class Vector{
 		
         Vector sub(Vector v);
 
-		Vector scalarMult(int a);
+		Vector scalarMult(float a);
 
 		Vector crossProd(Vector v);
 
@@ -51,9 +51,9 @@ Vector operator+(Vector v1, Vector v2);
 
 Vector operator-(Vector v1, Vector v2);
     
-Vector operator*(int a, Vector v);
+Vector operator*(float a, Vector v);
 
-Vector operator*(Vector v, int a);
+Vector operator*(Vector v, float a);
 
 Vector operator%(Vector v1, Vector v2);
 

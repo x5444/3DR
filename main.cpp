@@ -10,7 +10,7 @@ int main(){
     RenderTarget t(800,600);
     Renderer r(Vector(-3,0,0), Vector(1,0,1), 30, &s, &t);
 
-    s.lights.push_back(LightSource(Vector(0,0,0), Color()));
+    s.lights.push_back(LightSource(Vector(0,0,0), Color(1,1,1)));
 
     s.triags.push_back(Triangle(
         Vector( 1, 1, 3),
@@ -38,10 +38,7 @@ int main(){
 
     std::list<Triangle>::iterator i;
     for(i = s.triags.begin(); i != s.triags.end(); i++){
-        for(int j=0; j<3; j++){
-            Point p = r.centralProject(i->v[j]);
-            printf("%.2f, %.2f\n", p.x(), p.y());
-        }
+        r.renderTriangle(*i);
     }
 
     /*

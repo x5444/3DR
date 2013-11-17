@@ -49,7 +49,7 @@ Vector Vector::sub(Vector v){
     return res;
 }
 
-Vector Vector::scalarMult(int a){
+Vector Vector::scalarMult(float a){
 	return Vector(this->vx[0]*a, this->vx[1]*a, this->vx[2]*a);
 }
 
@@ -94,11 +94,11 @@ Vector operator-(Vector v1, Vector v2){
     return v1.sub(v2);
 }
     
-Vector operator*(int a, Vector v){
+Vector operator*(float a, Vector v){
 	return v.scalarMult(a);
 }
 
-Vector operator*(Vector v, int a){
+Vector operator*(Vector v, float a){
 	return v.scalarMult(a);
 }
 

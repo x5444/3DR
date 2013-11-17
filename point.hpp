@@ -12,7 +12,25 @@ class Point{
 
         float& y();
 
+        int xi();
+
+        int yi();
+
         float& dist();
+
+        Point scalarMult(float a);
+
+        Point add(Point p);
+
+        Point sub(Point p);
 };
+
+Point operator*(float a, Point p);
+
+Point operator*(Point p, float a);
+
+Point operator+(Point p1, Point p2);
+
+Point operator-(Point p1, Point p2);
 
 #endif // __POINT_HPP__
