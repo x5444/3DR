@@ -5,18 +5,22 @@
 
 class Color{
     private:
-        uint32_t color;
+        float c[3];
 
     public:
-        Color(uint32_t c=0);
+        Color();
 
-        Color(uint8_t r, uint8_t g, uint8_t b);
+        Color(float r, float g, float b);
 
         Color add(Color c);
         
         Color sub(Color c);
         
-        Color scalarMult(int a);
+        Color scalarMult(float a);
+
+        float &r();
+        float &g();
+        float &b();
 };
 
 Color operator+(Color c1, Color c2);

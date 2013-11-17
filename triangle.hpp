@@ -6,12 +6,13 @@
 
 class Triangle{
     private:
-        Vector v[3];    // 3 Corners
-        Color c[3];     // With a color each
         Vector n;       // 1 Normal
         Vector m;       // Middle
 
     public:
+        Vector v[3];    // 3 Corners
+        Color c[3];     // With a color each
+
         Triangle(Vector v1, Vector v2, Vector v3);
         Triangle(Vector v1, Color c1, Vector v2, Color c2, Vector v3, Color c3);
 
