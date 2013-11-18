@@ -13,6 +13,10 @@ Color::Color(float r, float g, float b){
     this->c[2] = b;
 }
 
+uint32_t Color::toInt(){
+    return ((uint32_t)(this->c[0]*255)&0xFF)<<24 | ((uint32_t)(this->c[1]*255)&0xFF)<<16 | ((uint32_t)(this->c[2]*255)&0xFF)<<8 | 0x00;
+}
+
 Color Color::add(Color c){
     return Color(this->c[0] + c.r(), this->c[1] + c.g(), this->c[2] + c.b());
 }
@@ -24,6 +28,11 @@ Color Color::sub(Color c){
 Color Color::scalarMult(float a){
     return Color(this->c[0]*a, this->c[1]*a, this->c[2]*a);
 }
+
+Color Color::scalarProd(Color c1){
+    return Color(this->c[0]*c1.c[0], this->c[1]*c1.c[1], this->c[2]*c1.c[2]);
+}
+
 
 float &Color::r(){
     return this->c[0];
@@ -54,3 +63,6 @@ Color operator*(Color c, float a){
 	return c.scalarMult(a);
 }
 
+Color operator*(Color c1, Color c2){
+	return c1.scalarProd(c2);
+}

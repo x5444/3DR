@@ -30,6 +30,8 @@ class Renderer{
         Color getBrightness(Triangle t);
 
         void renderTriangle(Triangle t);
+
+        void renderScene();
 };
 
 #endif // __RENDERER_HPP__

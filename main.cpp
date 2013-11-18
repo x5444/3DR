@@ -10,7 +10,19 @@ int main(){
     RenderTarget t(800,600);
     Renderer r(Vector(-3,0,0), Vector(1,0,1), 30, &s, &t);
 
-    s.lights.push_back(LightSource(Vector(0,0,0), Color(1,1,1)));
+    s.lights.push_back(LightSource(Vector(0,0,4), Color(1,1,1)));
+
+    s.triags.push_back(Triangle(
+        Vector( 1, 1,-3),
+        Vector( 1,-1,-3),
+        Vector(-1,-1,-3)
+    ));
+
+    s.triags.push_back(Triangle(
+        Vector( 1, 1,-3),
+        Vector(-1, 1,-3),
+        Vector(-1,-1,-3)
+    ));
 
     s.triags.push_back(Triangle(
         Vector( 1, 1, 3),

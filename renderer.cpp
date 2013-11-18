@@ -48,11 +48,16 @@ Point Renderer::centralProject(Vector v){
     vn.x() = (v-mainPoint)*e[1];
     vn.y() = (v-mainPoint)*e[2];
 
+    int sgn = 1;
+    if(vn.z() > 0){ // Vector is behind 
+        sgn = -1;
+    }
+
     float px, py;
     px = vn.x()/(1-(vn.z()/d));
     py = vn.y()/(1-(vn.z()/d));
 
-    return Point(px, py, vn.length()); 
+    return Point(px, py, sgn*(v-eyePoint).length()); 
 }
 
 Color Renderer::getBrightness(Triangle t){
@@ -88,11 +93,41 @@ void Renderer::renderTriangle(Triangle tr){
     printf("\nStarting a new Triangle:\n");
 
     Point p[3];
+    int sgn = 0;
     for(int i=0; i<3; i++){
         p[i] = ((fmax(t->height(), t->width())/2)*Point(1,1,0))+(this->centralProject(tr.v[i])*this->scale);
+
+        if(t->height() < t->width()){
+            p[i].y() -= (t->width()-t->height())/2;
+        }
+        if(t->height() > t->width()){
+            p[i].x() -= (t->height()-t->width())/2;
+        }
+        
         printf("%i,%i|%.2f\n",p[i].xi(),p[i].yi(),p[i].dist());
+        if(p[i].dist() > 0){
+            sgn = 1;
+        }
     }
 
     Color br = this->getBrightness(tr);
-    //printf("%.2f,%.2f,%.2f\n",br.r(), br.g(), br.b());
+    printf("%.2f,%.2f,%.2f\n",br.r(), br.g(), br.b());
+    if(sgn==0){
+        printf("Triangle behind projection area\n");
+        return;
+    }
+
+    // Actually draw our trianlge
+    for(int i=0; i<3; i++){
+        uint32_t color = (tr.c[i]*br).toInt();
+        t->fb(p[i].x(), p[i].y()) = color;
+    }
 }
+
+void Renderer::renderScene(){
+    std::list<Triangle>::iterator i;
+    for(i=s->triags.begin(); i!=s->triags.end(); i++){
+        this->renderTriangle(*i);
+    }
+}
+
