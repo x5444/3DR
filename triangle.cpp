@@ -4,6 +4,9 @@ Triangle::Triangle(Vector v1, Vector v2, Vector v3){
     v[0] = v1;
     v[1] = v2;
     v[2] = v3;
+    c[0] = Color(1.0f, 0.0f, 0.0f);
+    c[1] = Color(1.0f, 0.0f, 0.0f);
+    c[2] = Color(1.0f, 0.0f, 0.0f);
     m = (v1+v2+v3)*(1.0f/3.0f);
 }
 

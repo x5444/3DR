@@ -5,17 +5,21 @@
 
 class RenderTarget{
     private:
-        uint32_t *framebuffer;
         float *zbuffer;
         int w, h;
 
     public:
+        uint32_t *framebuffer;
+
         RenderTarget(int width, int height);
+
+        void clear();
 
         int width();
         int height();
 
         uint32_t &fb(int x, int y);
+        void setfb(int x, int y, uint32_t val);
         float &zb(int x, int y);
 };
 

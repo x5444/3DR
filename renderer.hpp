@@ -20,6 +20,9 @@ class Renderer{
         Scene   *s;
         RenderTarget *t;
 
+        void drawUpperTriangle(Point p1, Point p2, Point p3, Color c);
+        void drawLowerTriangle(Point p1, Point p2, Point p3, Color c);
+
 	public:
 		Renderer(Vector eyePoint, Vector direction, float angle, Scene *sc, RenderTarget *ta);
 

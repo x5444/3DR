@@ -87,10 +87,63 @@ Color Renderer::getBrightness(Triangle t){
     return res;
 }
 
+void Renderer::drawLowerTriangle(Point p1, Point p2, Point p3, Color c){
+    //printf("drawUpperTriag\n");
+    const int yStart = p1.yi();
+    const int yEnd = p3.yi(); // Equal to p3.yi in this case
+
+    const int x_l = p1.xi() - p2.xi();
+    const int x_r = p3.xi() - p1.xi();
+    const int h = p2.yi() - p1.yi()+1;
+    //printf("%i\n", h);
+
+    int xStart = p1.xi();   // These will vary during runtime
+    int xEnd = p1.xi();
+
+    for(int y=yStart; y<=yEnd; y++){
+        xStart = p1.xi()-(((float)(y-yStart)/(float)h)*x_l);
+        xEnd = p1.xi()+(((float)(y-yStart+1)/(float)h)*x_r);
+        //printf("%i,%i|%i\n", xStart, xEnd,y);
+
+        for(int x=xStart; x<=xEnd; x++){
+            t->fb(x,y) = c.toInt();
+            //printf("%x|", c.toInt());
+        }
+    }
+
+    //printf("%i,%i\n", yStart, yEnd);
+}
+
+void Renderer::drawUpperTriangle(Point p1, Point p2, Point p3, Color c){
+    //printf("drawLowerTriag\n");
+    const int yStart = p1.yi(); // Equal to p2.yi in this case
+    const int yEnd = p3.yi();
+
+    const int x_l = p3.xi() - p1.xi();
+    const int x_r = p2.xi() - p3.xi();
+    const int h = p3.yi() - p1.yi()+1;
+    //printf("%i\n", h);
+
+    int xStart = p1.xi();   // These will vary during runtime
+    int xEnd = p2.xi();
+
+    for(int y=yStart; y<=yEnd; y++){
+        xStart = p3.xi()-(((float)(yEnd-y)/(float)h)*x_l);
+        xEnd = p3.xi()+(((float)(yEnd-y+1)/(float)h)*x_r);
+        //printf("%i,%i\n", xStart, xEnd);
+
+        for(int x=xStart; x<=xEnd; x++){
+            t->fb(x,y) = c.toInt();
+        }
+    }
+
+    //printf("%i,%i\n", yStart, yEnd);
+}
+
 void Renderer::renderTriangle(Triangle tr){
     tr.buildNormal(this->eyePoint);
 
-    printf("\nStarting a new Triangle:\n");
+    //printf("\nStarting a new Triangle:\n");
 
     Point p[3];
     int sgn = 0;
@@ -104,23 +157,70 @@ void Renderer::renderTriangle(Triangle tr){
             p[i].x() -= (t->height()-t->width())/2;
         }
         
-        printf("%i,%i|%.2f\n",p[i].xi(),p[i].yi(),p[i].dist());
+        //printf("%i,%i|%.2f\n",p[i].xi(),p[i].yi(),p[i].dist());
         if(p[i].dist() > 0){
             sgn = 1;
         }
     }
 
     Color br = this->getBrightness(tr);
-    printf("%.2f,%.2f,%.2f\n",br.r(), br.g(), br.b());
+    //printf("%.2f,%.2f,%.2f\n",br.r(), br.g(), br.b());
     if(sgn==0){
-        printf("Triangle behind projection area\n");
+        //printf("Triangle behind projection area\n");
         return;
     }
 
-    // Actually draw our trianlge
+    // for(int i=0; i<3; i++){
+    //     p[i].y() = t->height() - p[i].y();
+    // }
+
+    // Sort Points by y coordinate, then by x coordinate
+    Point pb;
+    if(p[1].y() < p[0].y()){
+        pb = p[0];
+        p[0] = p[1];
+        p[1] = pb;
+    }
+    if(p[2].y() < p[1].y()){
+        pb = p[1];
+        p[1] = p[2];
+        p[2] = pb;
+    }
+    if(p[1].y() < p[0].y()){
+        pb = p[0];
+        p[0] = p[1];
+        p[1] = pb;
+    }
+    if(p[0].y()==p[1].y() && p[1].x() < p[0].x()){
+        pb = p[0];
+        p[0] = p[1];
+        p[1] = pb;
+    }
+    if(p[1].y()==p[2].y() && p[2].x() < p[1].x()){
+        pb = p[1];
+        p[1] = p[2];
+        p[2] = pb;
+    }
     for(int i=0; i<3; i++){
-        uint32_t color = (tr.c[i]*br).toInt();
-        t->fb(p[i].x(), p[i].y()) = color;
+        //printf("%i,%i|%.2f\n",p[i].xi(),p[i].yi(),p[i].dist());
+    }
+        
+
+    // Actually draw our trianlge
+    if(p[0].y() == p[1].y()){
+        drawUpperTriangle(p[0], p[1], p[2], tr.c[0]*br);
+    }else if(p[1].y() == p[2].y()){
+        drawLowerTriangle(p[0], p[1], p[2], tr.c[0]*br);
+    }else{
+        // Generate helper point ph
+        int yh = p[1].y();
+        int xh = p[2].x() - (p[2].x()-p[0].x()) * (p[2].y()-p[1].y())/(p[2].y()-p[0].y());
+        //float dh = (p[0]-p[2]).length();
+        Point ph(xh, yh, 0);
+        printf("(%i|%i)(%i|%i)(%i|%i)(%i|%i)\n",p[0].xi(),p[0].yi(),p[1].xi(),p[1].yi(),p[2].xi(),p[2].yi(),ph.xi(),ph.yi());
+        drawLowerTriangle(p[0], ph, p[1], tr.c[0]*br);
+        drawUpperTriangle(ph, p[1], p[2], tr.c[0]*br);
+        //printf("NIY\n");
     }
 }
 
