@@ -24,7 +24,7 @@ void RenderTarget::clear(){
 uint32_t zero = 0;
 uint32_t &RenderTarget::fb(int x, int y){
     zero = 0;
-    if(x<w && y<h){
+    if(x<w && y<h && x>=0 && y>=0){
         return this->framebuffer[(y*w)+x];
     }else{
         return zero;
@@ -38,7 +38,7 @@ void RenderTarget::setfb(int x, int y, uint32_t val){
 float zerof = 0;
 float &RenderTarget::zb(int x, int y){
     zero = 0;
-    if(x<w && y<h){
+    if(x<w && y<h && x>=0 && y>=0){
         return this->zbuffer[y*w+x];
     }else{
         return zerof;
