@@ -14,6 +14,7 @@ class Triangle{
         Color c[3];     // With a color each
 
         Triangle(Vector v1, Vector v2, Vector v3);
+        Triangle(Vector v1, Vector v2, Vector v3, Color c);
         Triangle(Vector v1, Color c1, Vector v2, Color c2, Vector v3, Color c3);
 
         void buildNormal(Vector ref);   // This needs a reference point in order to

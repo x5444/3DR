@@ -14,7 +14,7 @@ Color::Color(float r, float g, float b){
 }
 
 uint32_t Color::toInt(){
-    return ((uint32_t)(this->c[0]*255)&0xFF)<<24 | ((uint32_t)(this->c[1]*255)&0xFF)<<16 | ((uint32_t)(this->c[2]*255)&0xFF)<<8 | 0x00;
+    return ((uint32_t)(this->c[0]*255)&0xFF)<<16 | ((uint32_t)(this->c[1]*255)&0xFF)<<8 | ((uint32_t)(this->c[2]*255)&0xFF);
 }
 
 Color Color::add(Color c){

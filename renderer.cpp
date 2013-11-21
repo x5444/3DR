@@ -147,6 +147,7 @@ void Renderer::drawLowerTriangle(Point p1, Point p2, Point p3, Color c){
 
             if(depth > 0 and depth < t->zb(x,y)){
                 t->fb(x,y) = c.toInt();
+                t->zb(x,y) = depth;
             }
         }
     }
@@ -197,6 +198,7 @@ void Renderer::drawUpperTriangle(Point p1, Point p2, Point p3, Color c){
 
             if(depth > 0 and depth < t->zb(x,y)){
                 t->fb(x,y) = c.toInt();
+                t->zb(x,y) = depth;
             }
         }
     }

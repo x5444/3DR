@@ -10,6 +10,16 @@ Triangle::Triangle(Vector v1, Vector v2, Vector v3){
     m = (v1+v2+v3)*(1.0f/3.0f);
 }
 
+Triangle::Triangle(Vector v1, Vector v2, Vector v3, Color co){
+    v[0] = v1;
+    c[0] = co;
+    v[1] = v2;
+    c[1] = co;
+    v[2] = v3;
+    c[2] = co;
+    m = (v1+v2+v3)*(1.0f/3.0f);
+}
+
 Triangle::Triangle(Vector v1, Color c1, Vector v2, Color c2, Vector v3, Color c3){
     v[0] = v1;
     c[0] = c1;
