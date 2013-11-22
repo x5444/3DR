@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 #include <SDL/SDL.h>
 
@@ -41,19 +42,19 @@ int main(){
     //    Vector(-1,-1,-3)
     //));
 
-    //s.triags.push_back(Triangle(
-    //    Vector( 1, 1, 3),
-    //    Vector( 1,-1, 3),
-    //    Vector(-1,-1, 3),
-    //    Color(1,0,0)
-    //));
+    s.triags.push_back(Triangle(
+        Vector( 1, 1, 3),
+        Vector( 1,-1, 3),
+        Vector(-1,-1, 3),
+        Color(1,0,0)
+    ));
 
-    //s.triags.push_back(Triangle(
-    //    Vector( 1, 1, 3),
-    //    Vector(-1, 1, 3),
-    //    Vector(-1,-1, 3),
-    //    Color(1,0,0)
-    //));
+    s.triags.push_back(Triangle(
+        Vector( 1, 1, 3),
+        Vector(-1, 1, 3),
+        Vector(-1,-1, 3),
+        Color(1,0,0)
+    ));
 
     s.triags.push_back(Triangle(
         Vector( 1, 1, 5),
@@ -100,15 +101,22 @@ int main(){
     int x = 6;
     char c='-';
     int Run=1;
+    uint32_t startT = SDL_GetTicks();
+    int framecnt = 0;
     SDL_Event Events;
     while(Run){
+        //scanf("%c",&c);
         t.clear();
         r.renderScene();
-        r.createView(Vector((float)x/2,3,0), Vector((float)x*(-1.0f/6.0f),-1,1), 30);
+        //r.createView(Vector((float)x/2,0,0), Vector((float)x*(-1.0f/6.0f),0,1), 30);
+        r.createView(
+            Vector(6*cos((float)x/10.0f), 3, 5+5*sin((float)x/10.0f)),
+            Vector(-10*cos((float)x/10.0f),-1, -6*sin((float)x/10.0f)).normalize(),
+            30);
 
-        if(x==-20){
+        if(x==-100){
             c='+';
-        }else if(x==20){
+        }else if(x==100){
             c='-';
         }
 
@@ -120,29 +128,20 @@ int main(){
 
         SDL_LockSurface(surface);
 
-        for(int y=RTS_Y-1; y>=0;y--){
-            for(int x=0; x<RTS_X; x++){
-
-                //c = SDL_MapRGB( screen->format, r, g, b );
-                uint8_t * pxl = (uint8_t*)surface->pixels;
-                pxl += (y * surface->pitch) + (x * sizeof(uint32_t));
-                *((uint32_t*)pxl) = t.fb(x,RTS_Y-y-1);
-
-                //printf("%c", t.fb(x,y)?'X':' ');
-            }
-            //printf("\n");
-        }
+        uint8_t * pxl = (uint8_t*)surface->pixels;
+        memcpy((uint32_t*)pxl, t.fbadr(), RTS_X*RTS_Y*sizeof(uint32_t));
 
         SDL_UnlockSurface(surface);
-
-        //Apply image to screen
-        // SDL_BlitSurface( hello, NULL, screen, NULL );
 
         //Update Screen
         SDL_Flip( surface );
 
         //Pause
-        SDL_Delay( 50 );
+        SDL_Delay( 10 );
+
+        framecnt++;
+        float fps = ( framecnt/(float)(SDL_GetTicks() - startT) )*1000;
+        printf("%.2f\n",fps);
 
         while (SDL_PollEvent(&Events)){
             if (Events.type == SDL_QUIT){

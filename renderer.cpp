@@ -1,3 +1,5 @@
+//#define DEBUG
+
 #include <stdint.h>
 #include <math.h>
 #include <list>
@@ -135,7 +137,7 @@ void Renderer::drawLowerTriangle(Point p1, Point p2, Point p3, Color c){
     // t = p1.dist() - n*p1.y() - m*p1.x()     -- That's what maxima said
     float st = p1.dist() - n*p1.y() - m*p1.x();
     #ifdef DEBUG
-        printf("d = %.2f*x + %.2f*y + %2.f\n", m,n,st);
+        printf("d = %.4f*x + %.4f*y + %.4f\n", m,n,st);
     #endif
 
     for(int y=yStart; y<=yEnd; y++){
@@ -186,7 +188,7 @@ void Renderer::drawUpperTriangle(Point p1, Point p2, Point p3, Color c){
     // t = p1.dist() - n*p1.y() - m*p1.x()     -- That's what maxima said
     float st = p1.dist() - n*p1.y() - m*p1.x();
     #ifdef DEBUG
-        printf("d = %.2f*x + %.2f*y + %2.f\n", m,n,st);
+        printf("d = %.4f*x + %.4f*y + %.4f\n", m,n,st);
     #endif
 
     for(int y=yStart; y<=yEnd; y++){

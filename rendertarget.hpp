@@ -19,6 +19,7 @@ class RenderTarget{
         int height();
 
         uint32_t &fb(int x, int y);
+        uint32_t *fbadr();
         void setfb(int x, int y, uint32_t val);
         float &zb(int x, int y);
 };
