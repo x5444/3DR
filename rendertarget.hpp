@@ -7,10 +7,9 @@ class RenderTarget{
     private:
         float *zbuffer;
         int w, h;
-
-    public:
         uint32_t *framebuffer;
 
+    public:
         RenderTarget(int width, int height);
 
         void clear();

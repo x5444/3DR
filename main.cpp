@@ -43,20 +43,6 @@ int main(){
     //));
 
     s.triags.push_back(Triangle(
-        Vector( 1, 1, 3),
-        Vector( 1,-1, 3),
-        Vector(-1,-1, 3),
-        Color(1,0,0)
-    ));
-
-    s.triags.push_back(Triangle(
-        Vector( 1, 1, 3),
-        Vector(-1, 1, 3),
-        Vector(-1,-1, 3),
-        Color(1,0,0)
-    ));
-
-    s.triags.push_back(Triangle(
         Vector( 1, 1, 5),
         Vector( 1,-1, 5),
         Vector(-1,-1, 5),
@@ -82,6 +68,20 @@ int main(){
         Vector( 1, 1, 3),
         Vector( 1,-1, 5),
         Color(0,1,0)
+    ));
+
+    s.triags.push_back(Triangle(
+        Vector( 1, 1, 3),
+        Vector( 1,-1, 3),
+        Vector(-1,-1, 3),
+        Color(1,0,0)
+    ));
+
+    s.triags.push_back(Triangle(
+        Vector( 1, 1, 3),
+        Vector(-1, 1, 3),
+        Vector(-1,-1, 3),
+        Color(1,0,0)
     ));
 
     s.triags.push_back(Triangle(
@@ -107,12 +107,13 @@ int main(){
     while(Run){
         //scanf("%c",&c);
         t.clear();
-        r.renderScene();
         //r.createView(Vector((float)x/2,0,0), Vector((float)x*(-1.0f/6.0f),0,1), 30);
         r.createView(
-            Vector(6*cos((float)x/10.0f), 3, 5+5*sin((float)x/10.0f)),
+            Vector(6*cos((float)x/10.0f), 2, 5+5*sin((float)x/10.0f)),
             Vector(-10*cos((float)x/10.0f),-1, -6*sin((float)x/10.0f)).normalize(),
             30);
+
+        r.renderScene();
 
         if(x==-100){
             c='+';
@@ -137,7 +138,7 @@ int main(){
         SDL_Flip( surface );
 
         //Pause
-        SDL_Delay( 10 );
+        SDL_Delay( 15 );
 
         framecnt++;
         float fps = ( framecnt/(float)(SDL_GetTicks() - startT) )*1000;

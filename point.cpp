@@ -1,4 +1,5 @@
 #include "point.hpp"
+#include <math.h>
 
 Point::Point(float x, float y, float dist){
     this->vx = x;
@@ -26,6 +27,10 @@ float& Point::dist(){
     return vdist;
 }
 
+float Point::length(){
+    return sqrt(vx*vx+vy*vy);
+}
+
 Point Point::scalarMult(float a){
     return Point(a*this->vx, a*this->vy, this->vdist);
 }
@@ -35,7 +40,7 @@ Point Point::add(Point p){
 }
 
 Point Point::sub(Point p){
-    return Point(p.vx-this->vx, p.vy-this->vy, p.vdist-this->vdist);
+    return Point(this->vx-p.vx, this->vy-p.vy, this->vdist-p.vdist);
 }
 
 Point operator*(float a, Point p){

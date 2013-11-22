@@ -18,6 +18,8 @@ class Point{
 
         float& dist();
 
+        float length();
+
         Point scalarMult(float a);
 
         Point add(Point p);

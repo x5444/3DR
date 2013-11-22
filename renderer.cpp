@@ -1,5 +1,3 @@
-//#define DEBUG
-
 #include <stdint.h>
 #include <math.h>
 #include <list>
@@ -106,11 +104,21 @@ Color Renderer::getBrightness(Triangle t){
 
 void Renderer::drawLowerTriangle(Point p1, Point p2, Point p3, Color c){
     #ifdef DEBUG
-        printf("drawUpperTriangle(T1,T2,T3)\n");
+        printf("drawLowerTriangle(T1,T2,T3)\n");
         printf("T1: (%.2f|%.2f|%.2f)\n",p1.x(),p1.y(),p1.dist());
         printf("T2: (%.2f|%.2f|%.2f)\n",p2.x(),p2.y(),p2.dist());
         printf("T3: (%.2f|%.2f|%.2f)\n",p3.x(),p3.y(),p3.dist());
     #endif
+
+    /////////////////////////////////
+    //
+    // p2 |    | p3
+    //     ____
+    //    \    /
+    //     \  /
+    //      \/  <- p1
+    //
+    /////////////////////////////////
 
     const int yStart = p1.yi();
     const int yEnd = p3.yi(); // Equal to p3.yi in this case
@@ -147,7 +155,7 @@ void Renderer::drawLowerTriangle(Point p1, Point p2, Point p3, Color c){
         for(int x=xStart; x<=xEnd; x++){
             float depth = m*x + n*y + st;
 
-            if(depth > 0 and depth < t->zb(x,y)){
+            if(depth > 0 && depth <= t->zb(x,y)){
                 t->fb(x,y) = c.toInt();
                 t->zb(x,y) = depth;
             }
@@ -158,10 +166,21 @@ void Renderer::drawLowerTriangle(Point p1, Point p2, Point p3, Color c){
 void Renderer::drawUpperTriangle(Point p1, Point p2, Point p3, Color c){
     #ifdef DEBUG
         printf("drawUpperTriangle(T1,T2,T3)\n");
+        printf("Color: (%.2f|%.2f|%.2f)\n", c.r(), c.g(), c.b());
         printf("T1: (%.2f|%.2f|%.2f)\n",p1.x(),p1.y(),p1.dist());
         printf("T2: (%.2f|%.2f|%.2f)\n",p2.x(),p2.y(),p2.dist());
         printf("T3: (%.2f|%.2f|%.2f)\n",p3.x(),p3.y(),p3.dist());
     #endif
+
+    /////////////////////////////////
+    //
+    //      /\  <- p3
+    //     /  \
+    //    /____\
+    //    ^    ^
+    // p1 |    | p2
+    //
+    /////////////////////////////////
 
     const int yStart = p1.yi(); // Equal to p2.yi in this case
     const int yEnd = p3.yi();
@@ -182,7 +201,7 @@ void Renderer::drawUpperTriangle(Point p1, Point p2, Point p3, Color c){
     //              and ph.y is p2.y and ph.dist() is
     //              m*(ph.x()-p2.x()) + p2.dist()
     Point ph(p3.x(), p2.y(), 0);
-    ph.dist() = m*(ph.x()-p2.x()) + p2.dist();
+    ph.dist() = m*(ph.x()-p1.x()) + p1.dist();
     float n = (ph.dist() - p3.dist()) / (ph.y() - p3.y());
 
     // t = p1.dist() - n*p1.y() - m*p1.x()     -- That's what maxima said
@@ -198,7 +217,7 @@ void Renderer::drawUpperTriangle(Point p1, Point p2, Point p3, Color c){
         for(int x=xStart; x<=xEnd; x++){
             float depth = m*x + n*y + st;
 
-            if(depth > 0 and depth < t->zb(x,y)){
+            if(depth > 0 && depth <= t->zb(x,y)){
                 t->fb(x,y) = c.toInt();
                 t->zb(x,y) = depth;
             }
@@ -287,13 +306,9 @@ void Renderer::renderTriangle(Triangle tr){
         float yh = p[1].y();
         float xh = p[2].x() - (p[2].x()-p[0].x()) * (p[2].y()-p[1].y())/(p[2].y()-p[0].y()); // Awful code is awful.
         Point ph(xh, yh, 0);
-        if(p[2].x() != p[0].x()){
-            ph.dist() = p[1].dist() + (ph.x()-p[0].x())*((p[2].dist()-p[0].dist())/(p[2].x()-p[0].x()));
-        }else{
-            ph.dist() = p[1].dist() + (ph.x()-p[1].x())*((p[2].dist()-p[1].dist())/(p[2].x()-p[1].x()));
-        }
 
-        // TODO: Fill ph.depth
+        ph.dist() = p[0].dist() + (ph-p[0]).length() * ((p[2].dist()-p[0].dist())/(p[2]-p[0]).length());
+
         if(ph.x() < p[1].x()){
             drawLowerTriangle(p[0], ph, p[1], tr.c[0]*br);
             drawUpperTriangle(ph, p[1], p[2], tr.c[0]*br);
