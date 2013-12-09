@@ -35,6 +35,8 @@ class Renderer{
         void renderTriangle(Triangle t);
 
         void renderScene();
+
+        void applyFilter(float filter[][3]);
 };
 
 #endif // __RENDERER_HPP__

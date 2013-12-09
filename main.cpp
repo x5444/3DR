@@ -7,8 +7,16 @@
 #include "vector.hpp"
 #include "triangle.hpp"
 
-#define RTS_X 640
-#define RTS_Y 480
+#define RTS_X 600
+#define RTS_Y 400
+
+float highpass[3][3] =
+{
+    -1, -1, -1,
+    -1,  8, -1,
+    -1, -1, -1
+};
+
 
 int main(){
 	printf("\n\n\n");
@@ -28,7 +36,8 @@ int main(){
     //Renderer r(Vector(0,0,0), Vector(0,0,1), 30, &s, &t);
 
     s.lights.push_back(LightSource(Vector(0,0,-10), Color(1,1,1)));
-    s.globalBr = LightSource(Vector(0,0,0),Color(0.01,0.01,0.01));
+    //s.globalBr = LightSource(Vector(0,0,0),Color(0.01,0.01,0.01));
+    s.globalBr = LightSource(Vector(0,0,0),Color(1,1,1));
 
     //s.triags.push_back(Triangle(
     //    Vector( 1, 1,-3),
@@ -109,8 +118,8 @@ int main(){
         t.clear();
         //r.createView(Vector((float)x/2,0,0), Vector((float)x*(-1.0f/6.0f),0,1), 30);
         r.createView(
-            Vector(6*cos((float)x/10.0f), 2, 5+5*sin((float)x/10.0f)),
-            Vector(-10*cos((float)x/10.0f),-1, -6*sin((float)x/10.0f)).normalize(),
+            Vector(6*cos((float)x/10.0f),2,5+5*sin((float)x/10.0f)),
+            Vector(-10*cos((float)x/10.0f),-1,-6*sin((float)x/10.0f)).normalize(),
             30);
 
         r.renderScene();
@@ -127,6 +136,9 @@ int main(){
             x--;
         }
 
+        r.applyFilter(highpass);
+
+
         SDL_LockSurface(surface);
 
         uint8_t * pxl = (uint8_t*)surface->pixels;
@@ -136,9 +148,6 @@ int main(){
 
         //Update Screen
         SDL_Flip( surface );
-
-        //Pause
-        SDL_Delay( 15 );
 
         framecnt++;
         float fps = ( framecnt/(float)(SDL_GetTicks() - startT) )*1000;

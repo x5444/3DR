@@ -15,7 +15,7 @@ RenderTarget::RenderTarget(int width, int height){
 }
 
 void RenderTarget::clear(){
-    memset(framebuffer, 0, sizeof(uint32_t)*w*h);
+    memset(framebuffer, 0xFF, sizeof(uint32_t)*w*h);
     memset(zbuffer,80, sizeof(float)*w*h);  // 80 seems to work. not sure what
                                             //it actually translates to
 }
