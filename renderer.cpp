@@ -332,10 +332,12 @@ void Renderer::applyFilter(float filter[][3]){
             for(int j=-1; j<t->height()+1; j++){
                 for(int k=0; k<3; k++){
                     for(int l=0; l<3;l++){
-                        res += (t->zb(i+k-2, j+l-1) * filter[k][l]);
+                        res += (t->zb(i+k-1, j+l-1) * filter[k][l]);
                     }
                 }
-                t->fb(i,j) = (res>1.5) ? 0 : t->fb(i,j);
+                if(res>1.5){
+                    t->fb(i,j) = 0;
+                }
                 res = 0;
             }
         }

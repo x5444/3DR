@@ -21,6 +21,7 @@ class RenderTarget{
         uint32_t *fbadr();
         void setfb(int x, int y, uint32_t val);
         float &zb(int x, int y);
+        float *zbadr();
 };
 
 #endif // __RENDERTARGET_HPP__

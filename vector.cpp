@@ -3,7 +3,7 @@
 
 #include "vector.hpp"
 
-//yeeeeeah
+//http://en.wikipedia.org/wiki/Fast_inverse_square_root
 float Vector::invSqrt(float x)
 {
     float xhalf = 0.5f*x;

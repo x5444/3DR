@@ -44,6 +44,10 @@ float &RenderTarget::zb(int x, int y){
     }
 }
 
+float *RenderTarget::zbadr(){
+    return zbuffer;
+}
+
 uint32_t *RenderTarget::fbadr(){
     return framebuffer;
 }

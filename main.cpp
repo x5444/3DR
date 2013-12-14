@@ -118,8 +118,8 @@ int main(){
         t.clear();
         //r.createView(Vector((float)x/2,0,0), Vector((float)x*(-1.0f/6.0f),0,1), 30);
         r.createView(
-            Vector(6*cos((float)x/10.0f),2,5+5*sin((float)x/10.0f)),
-            Vector(-10*cos((float)x/10.0f),-1,-6*sin((float)x/10.0f)).normalize(),
+            Vector(6*cos((float)x/10.0f),4,5+5*sin((float)x/10.0f)-2),
+            Vector(-10*cos((float)x/10.0f),-3,-6*sin((float)x/10.0f)).normalize(),
             30);
 
         r.renderScene();
